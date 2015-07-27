@@ -4,11 +4,11 @@ class @Woot.TextareaAdapter
     @site_id = Math.floor((Math.random() * 999) + 1)
     @editor = $(editor_id)
     @site = new Woot.Site(this)
-    @author_ids = []
+    @author_ids = {}
     if authors_id?
       @authors = $(authors_id)
       @authors.append('<div>Author'+@site_id+' - me</div>')
-      @author_ids.push @site_id
+      @author_ids[@site_id] = 1
     # used for initial sync
     @socket.emit 'woot_send',
       type: 'cursor-create'
@@ -37,7 +37,7 @@ class @Woot.TextareaAdapter
   cursorCreate: (op) =>
     author = 'Author'+op.id
     unless @author_ids[op.id]
-      @author_ids.push op.id
+      @author_ids[op.id] = 1
       if op.state and @site.empty()
         @site.string = op.state.string
         @site.chars_by_id = op.state.chars_by_id
