@@ -151,6 +151,7 @@ class Woot.Site
       @contains(op.char.p) and @contains(op.char.n)
 
   receive: (op) =>
+    return if op.char and op.char.id[0] == @num
     if @isExecutable(op)
       @execute(op)
     else

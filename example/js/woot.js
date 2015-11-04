@@ -274,6 +274,9 @@
 
     Site.prototype.receive = function(op) {
       var new_pool;
+      if (op.char && op.char.id[0] === this.num) {
+        return;
+      }
       if (this.isExecutable(op)) {
         this.execute(op);
       } else {
