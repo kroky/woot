@@ -274,7 +274,6 @@
 
     Site.prototype.receive = function(op) {
       var new_pool;
-      console.log(op);
       if (this.isExecutable(op)) {
         this.execute(op);
       } else {
