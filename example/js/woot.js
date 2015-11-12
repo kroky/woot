@@ -197,7 +197,8 @@
       this.integrateIns(c, cp, cn);
       return this.socket.emit('woot_send', {
         type: 'ins',
-        char: c
+        char: c,
+        sender: this.num
       });
     };
 
@@ -207,7 +208,8 @@
       c.v = false;
       this.socket.emit('woot_send', {
         type: 'del',
-        char: c
+        char: c,
+        sender: this.num
       });
       return this.dirty = true;
     };
@@ -219,7 +221,8 @@
       this.socket.emit('woot_send', {
         type: 'attrib',
         char: c,
-        attribs: attribs
+        attribs: attribs,
+        sender: this.num
       });
       return this.dirty = true;
     };
@@ -274,7 +277,7 @@
 
     Site.prototype.receive = function(op) {
       var new_pool;
-      if (op.char && op.char.id[0] === this.num) {
+      if (op.sender && op.sender === this.num) {
         return;
       }
       if (this.isExecutable(op)) {

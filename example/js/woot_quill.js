@@ -116,7 +116,8 @@
         return this.socket.emit('woot_send', {
           type: 'cursor-change',
           id: this.site_id,
-          char: this.site.ithVisible(range.end)
+          char: this.site.ithVisible(range.end),
+          sender: this.site_id
         });
       }
     };

@@ -41,6 +41,7 @@ class @Woot.QuillAdapter
         # retain op
         # delete missing retains
         while( last_retain < op.start )
+          #console.log(['generateDel', index+1, last_retain, delta.startLength])
           @site.generateDel(index+1)
           last_retain++
         # special case of trailing new line char
@@ -74,6 +75,7 @@ class @Woot.QuillAdapter
         type: 'cursor-change'
         id: @site_id
         char: @site.ithVisible(range.end)
+        sender: @site_id
 
   cursorCreate: (op) =>
     author = 'Author'+op.id
