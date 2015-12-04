@@ -4,7 +4,7 @@
 
   this.Woot.TextareaAdapter = (function() {
 
-    function TextareaAdapter(socket, editor_id, authors_id) {
+    function TextareaAdapter(socket, room, editor_id, authors_id) {
       this.contents = __bind(this.contents, this);
 
       this.update = __bind(this.update, this);
@@ -23,6 +23,7 @@
 
       this.keydown = __bind(this.keydown, this);
       this.socket = socket;
+      this.room = room;
       this.site_id = Math.floor((Math.random() * 999) + 1);
       this.editor = $(editor_id);
       this.site = new Woot.Site(this);
@@ -34,6 +35,7 @@
       }
       this.socket.emit('woot_send', {
         type: 'cursor-create',
+        room: this.room,
         id: this.site_id,
         sender: this.site_id,
         state: null
@@ -80,6 +82,7 @@
         if (this.site_id !== op.sender) {
           this.socket.emit('woot_send', {
             type: 'cursor-create',
+            room: this.room,
             id: this.site_id,
             sender: op.sender,
             state: {

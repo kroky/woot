@@ -179,7 +179,7 @@
     };
 
     Site.prototype.generateIns = function(pos, char, attribs) {
-      var c, cn, cp;
+      var c, cn, cp, _ref;
       if (attribs == null) {
         attribs = {};
       }
@@ -196,6 +196,7 @@
       };
       this.integrateIns(c, cp, cn);
       return this.socket.emit('woot_send', {
+        room: (_ref = this.editor) != null ? _ref.room : void 0,
         type: 'ins',
         char: c,
         sender: this.num
@@ -203,10 +204,11 @@
     };
 
     Site.prototype.generateDel = function(pos) {
-      var c;
+      var c, _ref;
       c = this.ithVisible(pos);
       c.v = false;
       this.socket.emit('woot_send', {
+        room: (_ref = this.editor) != null ? _ref.room : void 0,
         type: 'del',
         char: c,
         sender: this.num
@@ -215,10 +217,11 @@
     };
 
     Site.prototype.generateAttrib = function(pos, attribs) {
-      var c;
+      var c, _ref;
       c = this.ithVisible(pos);
       this.extend(c.a, attribs);
       this.socket.emit('woot_send', {
+        room: (_ref = this.editor) != null ? _ref.room : void 0,
         type: 'attrib',
         char: c,
         attribs: attribs,
@@ -276,7 +279,10 @@
     };
 
     Site.prototype.receive = function(op) {
-      var new_pool;
+      var new_pool, _ref;
+      if (op.room && op.room !== ((_ref = this.editor) != null ? _ref.room : void 0)) {
+        return;
+      }
       if (op.sender && op.sender === this.num) {
         return;
       }

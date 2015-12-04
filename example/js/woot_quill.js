@@ -6,7 +6,7 @@
 
     QuillAdapter.prototype.colors = ['rgba(139,0,139,0.4)', 'rgba(255,127,0,0.4)', 'rgba(238,44,44,0.4)', 'rgba(179,238,58,0.4)', 'rgba(28,134,238,0.4)'];
 
-    function QuillAdapter(socket, editor_id, toolbar_id, authors_id) {
+    function QuillAdapter(socket, room, editor_id, toolbar_id, authors_id) {
       if (authors_id == null) {
         authors_id = null;
       }
@@ -29,6 +29,7 @@
       this.textChange = __bind(this.textChange, this);
 
       this.socket = socket;
+      this.room = room;
       this.site_id = Math.floor((Math.random() * 999) + 1);
       this.color = this.colors[Math.floor(Math.random() * 5)];
       this.editor = new Quill(editor_id, {
@@ -54,6 +55,7 @@
       }
       this.socket.emit('woot_send', {
         type: 'cursor-create',
+        room: this.room,
         id: this.site_id,
         color: this.color,
         sender: this.site_id,
@@ -115,6 +117,7 @@
       if (range) {
         return this.socket.emit('woot_send', {
           type: 'cursor-change',
+          room: this.room,
           id: this.site_id,
           char: this.site.ithVisible(range.end),
           sender: this.site_id
@@ -153,6 +156,7 @@
         if (this.site_id !== op.sender) {
           this.socket.emit('woot_send', {
             type: 'cursor-create',
+            room: this.room,
             id: this.site_id,
             color: this.color,
             sender: op.sender,

@@ -8,9 +8,10 @@
     <script type="text/javascript" src="http://localhost:843/socket.io/socket.io.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            socket = io.connect( "http://localhost:843", { "force new connection": true } );
+            var socket = io.connect( "http://localhost:843", { "force new connection": true } );
+            var room = 13;
             socket.on('connect', function(){
-                window.q = new Woot.TextareaAdapter(socket, '#editor', '#authors')
+                window.q = new Woot.TextareaAdapter(socket, room, '#editor', '#authors');
             });
             $('#show').on('click', function(){
                 console.log(window.q.site.value());
