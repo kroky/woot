@@ -283,7 +283,7 @@
       if (op.room && op.room !== ((_ref = this.editor) != null ? _ref.room : void 0)) {
         return;
       }
-      if (op.sender && op.sender === this.num) {
+      if (op.sender && op.sender === this.num && op.type !== 'cursor-create') {
         return;
       }
       if (this.isExecutable(op)) {

@@ -152,7 +152,7 @@ class Woot.Site
 
   receive: (op) =>
     return if op.room and op.room != @editor?.room
-    return if op.sender and op.sender == @num
+    return if op.sender and op.sender == @num and op.type != 'cursor-create'
     if @isExecutable(op)
       @execute(op)
     else
