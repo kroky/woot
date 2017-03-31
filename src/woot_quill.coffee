@@ -1,9 +1,8 @@
 class @Woot.QuillAdapter
   colors: ['rgba(139,0,139,0.4)', 'rgba(255,127,0,0.4)', 'rgba(238,44,44,0.4)', 'rgba(179,238,58,0.4)', 'rgba(28,134,238,0.4)']
 
-  constructor: (socket, room, editor_id, toolbar_id, authors_id = null) ->
+  constructor: (socket, editor_id, toolbar_id, authors_id = null) ->
     @socket = socket
-    @room = room
     @site_id = Math.floor((Math.random() * 999) + 1)
     @color = @colors[Math.floor(Math.random() * 5)]
     @editor = new Quill editor_id,
@@ -23,7 +22,6 @@ class @Woot.QuillAdapter
       @authors.append('<div style="background-color: '+@color+'">Author'+@site_id+' - me</div>')
     @socket.emit 'woot_send',
       type: 'cursor-create'
-      room: @room
       id: @site_id
       color: @color
       sender: @site_id
@@ -75,7 +73,6 @@ class @Woot.QuillAdapter
     if range
       @socket.emit 'woot_send',
         type: 'cursor-change'
-        room: @room
         id: @site_id
         char: @site.ithVisible(range.end)
         sender: @site_id
@@ -102,7 +99,6 @@ class @Woot.QuillAdapter
       if @site_id != op.sender
         @socket.emit 'woot_send',
           type: 'cursor-create'
-          room: @room
           id: @site_id
           color: @color
           sender: op.sender

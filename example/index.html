@@ -15,7 +15,8 @@
       var socket = io.connect( "http://localhost:843/", { "force new connection": true } );
       var room = 12;
       socket.on('connect', function(){
-        window.q = new Woot.QuillAdapter(socket, room, '#editor', '#toolbar', '#authors');
+        socket.emit('room', room);
+        window.q = new Woot.QuillAdapter(socket, '#editor', '#toolbar', '#authors');
       });
       $('#show').on('click', function(){
         console.log(window.q.site.value());

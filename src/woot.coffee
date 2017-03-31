@@ -99,18 +99,18 @@ class Woot.Site
       p: cp.id
       n: cn.id
     @integrateIns(c, cp, cn)
-    @socket.emit 'woot_send', {room: @editor?.room, type: 'ins', char: c, sender: @num}
+    @socket.emit 'woot_send', {type: 'ins', char: c, sender: @num}
 
   generateDel: (pos) =>
     c = @ithVisible(pos)
     c.v = false
-    @socket.emit 'woot_send', {room: @editor?.room, type: 'del', char: c, sender: @num}
+    @socket.emit 'woot_send', {type: 'del', char: c, sender: @num}
     @dirty = true
 
   generateAttrib: (pos, attribs) =>
     c = @ithVisible(pos)
     @extend( c.a, attribs )
-    @socket.emit 'woot_send', {room: @editor?.room, type: 'attrib', char: c, attribs: attribs, sender: @num}
+    @socket.emit 'woot_send', {type: 'attrib', char: c, attribs: attribs, sender: @num}
     @dirty = true
 
   integrateAttrib: (c, attribs) =>
@@ -151,7 +151,6 @@ class Woot.Site
       @contains(op.char.p) and @contains(op.char.n)
 
   receive: (op) =>
-    return if op.room and op.room != @editor?.room
     return if op.sender and op.sender == @num and op.type != 'cursor-create'
     if @isExecutable(op)
       @execute(op)
