@@ -12,7 +12,8 @@
       var room = 13;
       socket.on('connect', function(){
         socket.emit('room', room);
-        window.q = new Woot.TextareaAdapter(socket, '#editor', '#authors');
+        var io = new Woot.IO(socket);
+        window.q = new Woot.TextareaAdapter(io, '#editor', '#authors');
       });
       $('#show').on('click', function(){
         console.log(window.q.site.value());

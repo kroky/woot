@@ -1,6 +1,6 @@
 class @Woot.TextareaAdapter
-  constructor: (socket, editor_id, authors_id) ->
-    @socket = socket
+  constructor: (io, editor_id, authors_id) ->
+    @io = io
     @site_id = Math.floor((Math.random() * 999) + 1)
     @editor = $(editor_id)
     @site = new Woot.Site(this)
@@ -10,7 +10,7 @@ class @Woot.TextareaAdapter
       @authors.append('<div>Author'+@site_id+' - me</div>')
       @author_ids[@site_id] = 1
     # used for initial sync
-    @socket.emit 'woot_send',
+    @io.emit 'woot_send',
       type: 'cursor-create'
       id: @site_id
       sender: @site_id
@@ -44,7 +44,7 @@ class @Woot.TextareaAdapter
         @site.pool = op.state.pool
         @update()
       if @site_id != op.sender
-        @socket.emit 'woot_send',
+        @io.emit 'woot_send',
           type: 'cursor-create'
           id: @site_id
           sender: op.sender

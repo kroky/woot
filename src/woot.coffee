@@ -19,7 +19,7 @@ class Woot.Site
   
   constructor: (editor) ->
     @num = editor?.site_id
-    @socket = editor?.socket
+    @io = editor?.io
     @editor = editor
     @h = 0
     @string = [@start, @end]
@@ -28,8 +28,8 @@ class Woot.Site
     @chars_by_id['s'+@end.id[0]+'c'+@end.id[1]] = @end
     @pool = []
     @dirty = false
-    if @socket?
-      @socket.on 'woot_receive', @receive
+    if @io?
+      @io.on 'woot_receive', @receive
       setInterval @autosave, 10000
 
   extend: (object, properties) ->
@@ -99,18 +99,18 @@ class Woot.Site
       p: cp.id
       n: cn.id
     @integrateIns(c, cp, cn)
-    @socket.emit 'woot_send', {type: 'ins', char: c, sender: @num}
+    @io.emit 'woot_send', {type: 'ins', char: c, sender: @num}
 
   generateDel: (pos) =>
     c = @ithVisible(pos)
     c.v = false
-    @socket.emit 'woot_send', {type: 'del', char: c, sender: @num}
+    @io.emit 'woot_send', {type: 'del', char: c, sender: @num}
     @dirty = true
 
   generateAttrib: (pos, attribs) =>
     c = @ithVisible(pos)
     @extend( c.a, attribs )
-    @socket.emit 'woot_send', {type: 'attrib', char: c, attribs: attribs, sender: @num}
+    @io.emit 'woot_send', {type: 'attrib', char: c, attribs: attribs, sender: @num}
     @dirty = true
 
   integrateAttrib: (c, attribs) =>
@@ -186,7 +186,7 @@ class Woot.Site
 
   autosave: =>
     return unless @dirty
-    @socket.emit 'woot_save', @editor.contents()
+    @io.emit 'woot_save', @editor.contents()
     @dirty = false
 
 

@@ -44,7 +44,7 @@
       this.pos = bind(this.pos, this);
       this.empty = bind(this.empty, this);
       this.num = editor != null ? editor.site_id : void 0;
-      this.socket = editor != null ? editor.socket : void 0;
+      this.io = editor != null ? editor.io : void 0;
       this.editor = editor;
       this.h = 0;
       this.string = [this.start, this.end];
@@ -53,8 +53,8 @@
       this.chars_by_id['s' + this.end.id[0] + 'c' + this.end.id[1]] = this.end;
       this.pool = [];
       this.dirty = false;
-      if (this.socket != null) {
-        this.socket.on('woot_receive', this.receive);
+      if (this.io != null) {
+        this.io.on('woot_receive', this.receive);
         setInterval(this.autosave, 10000);
       }
     }
@@ -177,7 +177,7 @@
         n: cn.id
       };
       this.integrateIns(c, cp, cn);
-      return this.socket.emit('woot_send', {
+      return this.io.emit('woot_send', {
         type: 'ins',
         char: c,
         sender: this.num
@@ -188,7 +188,7 @@
       var c;
       c = this.ithVisible(pos);
       c.v = false;
-      this.socket.emit('woot_send', {
+      this.io.emit('woot_send', {
         type: 'del',
         char: c,
         sender: this.num
@@ -200,7 +200,7 @@
       var c;
       c = this.ithVisible(pos);
       this.extend(c.a, attribs);
-      this.socket.emit('woot_send', {
+      this.io.emit('woot_send', {
         type: 'attrib',
         char: c,
         attribs: attribs,
@@ -319,7 +319,7 @@
       if (!this.dirty) {
         return;
       }
-      this.socket.emit('woot_save', this.editor.contents());
+      this.io.emit('woot_save', this.editor.contents());
       return this.dirty = false;
     };
 

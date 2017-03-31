@@ -3,7 +3,7 @@
   var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   this.Woot.TextareaAdapter = (function() {
-    function TextareaAdapter(socket, editor_id, authors_id) {
+    function TextareaAdapter(io, editor_id, authors_id) {
       this.contents = bind(this.contents, this);
       this.update = bind(this.update, this);
       this.contentsInit = bind(this.contentsInit, this);
@@ -13,7 +13,7 @@
       this.keyup = bind(this.keyup, this);
       this.keypress = bind(this.keypress, this);
       this.keydown = bind(this.keydown, this);
-      this.socket = socket;
+      this.io = io;
       this.site_id = Math.floor((Math.random() * 999) + 1);
       this.editor = $(editor_id);
       this.site = new Woot.Site(this);
@@ -23,7 +23,7 @@
         this.authors.append('<div>Author' + this.site_id + ' - me</div>');
         this.author_ids[this.site_id] = 1;
       }
-      this.socket.emit('woot_send', {
+      this.io.emit('woot_send', {
         type: 'cursor-create',
         id: this.site_id,
         sender: this.site_id,
@@ -69,7 +69,7 @@
           this.update();
         }
         if (this.site_id !== op.sender) {
-          this.socket.emit('woot_send', {
+          this.io.emit('woot_send', {
             type: 'cursor-create',
             id: this.site_id,
             sender: op.sender,

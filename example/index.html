@@ -8,6 +8,7 @@
   <script src="//cdn.quilljs.com/0.17.6/quill.js"></script>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
   <script type="text/javascript" src="js/woot.js"></script>
+  <script type="text/javascript" src="js/woot_io.js"></script>
   <script type="text/javascript" src="js/woot_quill.js"></script>
   <script type="text/javascript" src="http://localhost:843/socket.io/socket.io.js"></script>
   <script type="text/javascript">
@@ -16,7 +17,8 @@
       var room = 12;
       socket.on('connect', function(){
         socket.emit('room', room);
-        window.q = new Woot.QuillAdapter(socket, '#editor', '#toolbar', '#authors');
+        var io = new Woot.IO(socket);
+        window.q = new Woot.QuillAdapter(io, '#editor', '#toolbar', '#authors');
       });
       $('#show').on('click', function(){
         console.log(window.q.site.value());

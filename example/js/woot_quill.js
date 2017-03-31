@@ -5,7 +5,7 @@
   this.Woot.QuillAdapter = (function() {
     QuillAdapter.prototype.colors = ['rgba(139,0,139,0.4)', 'rgba(255,127,0,0.4)', 'rgba(238,44,44,0.4)', 'rgba(179,238,58,0.4)', 'rgba(28,134,238,0.4)'];
 
-    function QuillAdapter(socket, editor_id, toolbar_id, authors_id) {
+    function QuillAdapter(io, editor_id, toolbar_id, authors_id) {
       if (authors_id == null) {
         authors_id = null;
       }
@@ -18,7 +18,7 @@
       this.cursorCreate = bind(this.cursorCreate, this);
       this.selectionChange = bind(this.selectionChange, this);
       this.textChange = bind(this.textChange, this);
-      this.socket = socket;
+      this.io = io;
       this.site_id = Math.floor((Math.random() * 999) + 1);
       this.color = this.colors[Math.floor(Math.random() * 5)];
       this.editor = new Quill(editor_id, {
@@ -42,7 +42,7 @@
         this.authors = $(authors_id);
         this.authors.append('<div style="background-color: ' + this.color + '">Author' + this.site_id + ' - me</div>');
       }
-      this.socket.emit('woot_send', {
+      this.io.emit('woot_send', {
         type: 'cursor-create',
         id: this.site_id,
         color: this.color,
@@ -103,7 +103,7 @@
 
     QuillAdapter.prototype.selectionChange = function(range) {
       if (range) {
-        return this.socket.emit('woot_send', {
+        return this.io.emit('woot_send', {
           type: 'cursor-change',
           id: this.site_id,
           char: this.site.ithVisible(range.end),
@@ -141,7 +141,7 @@
           });
         }
         if (this.site_id !== op.sender) {
-          this.socket.emit('woot_send', {
+          this.io.emit('woot_send', {
             type: 'cursor-create',
             id: this.site_id,
             color: this.color,
