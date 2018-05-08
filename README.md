@@ -18,7 +18,7 @@ Installation
 See examples folder. Copy JS files to your project. Include them in the head and instantiate the adapter like so:
 
     $(document).ready(function(){
-        socket = io.connect( "http://localhost:843", { "force new connection": true } );
+        socket = io.connect( "http://localhost:8000", { "force new connection": true } );
         socket.on('connect', function(){
             window.q = new Woot.TextareaAdapter(socket, '#editor', '#authors')
         });
@@ -28,7 +28,24 @@ See examples folder. Copy JS files to your project. Include them in the head and
 
 Similarly, you can connect the Quill rich text editor via the provided adapter in the examples folder. More info about the excellent QuillJS editor [here](http://quilljs.com/).
 
-You will also need to run the node app or plug it into your own node app. Example assumes that node app is running on `localhost`, port 843.
+You will also need to run the node app or plug it into your own node app. Example assumes that node app is running on `localhost`, port 8000.
+
+Running the example
+-------------------
+
+First, run the Node server:
+
+1. `cd node`
+2. `npm install`
+3. `npm run dev`
+
+Then, run a web server in the example directory. e.g., using [http-server](https://github.com/indexzero/http-server)
+
+1. `npm install -g http-server`
+2. `cd example`
+3. `http-server`
+
+Finally, open http://localhost:8080 in a couple of browser windows and play!
 
 Compilation
 -----------
