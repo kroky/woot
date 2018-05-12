@@ -10,11 +10,11 @@
   <script type="text/javascript" src="js/woot.js"></script>
   <script type="text/javascript" src="js/woot_io.js"></script>
   <script type="text/javascript" src="js/woot_quill.js"></script>
-  <script type="text/javascript" src="http://localhost:843/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="http://localhost:8000/socket.io/socket.io.js"></script>
   <script type="text/javascript">
     $(document).ready(function(){
-      var socket = io.connect( "http://localhost:843/", { "force new connection": true } );
-      var room = 12;
+      var socket = io.connect( "http://localhost:8000/", { "force new connection": true } );
+      var room = 'editor';
       socket.on('connect', function(){
         socket.emit('room', room);
         var io = new Woot.IO(socket);
